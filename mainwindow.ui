@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="tableWidget"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>选择</string>
+    </property>
+    <addaction name="Create"/>
+    <addaction name="Copy"/>
+    <addaction name="Delete"/>
+    <addaction name="Export"/>
+    <addaction name="Import"/>
+    <addaction name="Rename"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>开始</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="Create">
+   <property name="text">
+    <string>创建</string>
+   </property>
+  </action>
+  <action name="Copy">
+   <property name="text">
+    <string>复制</string>
+   </property>
+  </action>
+  <action name="Delete">
+   <property name="text">
+    <string>删除</string>
+   </property>
+  </action>
+  <action name="Export">
+   <property name="text">
+    <string>导出</string>
+   </property>
+  </action>
+  <action name="Import">
+   <property name="text">
+    <string>导入</string>
+   </property>
+  </action>
+  <action name="Rename">
+   <property name="text">
+    <string>重命名</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
