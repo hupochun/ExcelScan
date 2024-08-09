@@ -1,13 +1,13 @@
 #ifndef MAKERULE_H
 #define MAKERULE_H
 
-#include <QWidget>
+#include <QDialog>
 #include "rule.h"
 namespace Ui {
 class MakeRule;
 }
 
-class MakeRule : public QWidget
+class MakeRule : public QDialog
 {
     Q_OBJECT
 

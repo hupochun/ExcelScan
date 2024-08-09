@@ -7,6 +7,7 @@
 #define _WIN64 
 #define _WIN32 
 #define _CPPRTTI 
+#define _UTF8 
 #define _DEBUG 
 #define _MT 
 #define _DLL 

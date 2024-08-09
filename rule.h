@@ -5,23 +5,27 @@
 #include <QVector>
 #include "xlsxdocument.h"
 
+struct Err
+{
+    int ErrRow;
+    QChar ErrCol;
+};
 
 class Rule
 {
 public:
     Rule();
-    Rule(int ruletype,int condition,QString column,QString CompareData);
-    Rule(int ruletype,int condition,QString column);
+    Rule(int ruletype,int ruletype1,QString column,QString CompareData);
+    Rule(int ruletype,int ruletype1,QString column);
     int RT;
+    int RT1;
     int condition;
     QString column;
-    bool CheckRule();
+    void CheckRule(QXlsx::Document& xlsx);
     QString CompareData;
     QString Description;
     QString Name;
-
-
-    bool CheckRule(const QXlsx::Cell *cell);
+    QVector<Err> ErrMsg;
 };
 
 #endif // RULE_H

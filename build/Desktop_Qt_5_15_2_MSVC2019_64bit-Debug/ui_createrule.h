@@ -17,6 +17,8 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
@@ -28,9 +30,14 @@ class Ui_CreateRule
 public:
     QAction *Create;
     QWidget *centralwidget;
-    QGridLayout *gridLayout;
+    QGridLayout *gridLayout_3;
     QWidget *widget;
     QGridLayout *gridLayout_2;
+    QWidget *widget_2;
+    QGridLayout *gridLayout;
+    QPushButton *pushButton;
+    QSpacerItem *horizontalSpacer;
+    QSpacerItem *horizontalSpacer_2;
     QTableWidget *tableWidget;
     QMenuBar *menubar;
     QMenu *menu;
@@ -45,20 +52,43 @@ public:
         Create->setObjectName(QString::fromUtf8("Create"));
         centralwidget = new QWidget(CreateRule);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        gridLayout = new QGridLayout(centralwidget);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout_3 = new QGridLayout(centralwidget);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         widget = new QWidget(centralwidget);
         widget->setObjectName(QString::fromUtf8("widget"));
         gridLayout_2 = new QGridLayout(widget);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        tableWidget = new QTableWidget(widget);
+
+        gridLayout_3->addWidget(widget, 0, 0, 1, 1);
+
+        widget_2 = new QWidget(centralwidget);
+        widget_2->setObjectName(QString::fromUtf8("widget_2"));
+        gridLayout = new QGridLayout(widget_2);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        pushButton = new QPushButton(widget_2);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+
+        gridLayout->addWidget(pushButton, 0, 0, 1, 1);
+
+
+        gridLayout_3->addWidget(widget_2, 2, 2, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(323, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_3->addItem(horizontalSpacer, 2, 3, 1, 1);
+
+        horizontalSpacer_2 = new QSpacerItem(348, 38, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_3->addItem(horizontalSpacer_2, 2, 0, 1, 2);
+
+        tableWidget = new QTableWidget(centralwidget);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
         tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        tableWidget->setAlternatingRowColors(true);
+        tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+        tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-        gridLayout_2->addWidget(tableWidget, 0, 0, 1, 1);
-
-
-        gridLayout->addWidget(widget, 0, 0, 1, 1);
+        gridLayout_3->addWidget(tableWidget, 1, 0, 1, 4);
 
         CreateRule->setCentralWidget(centralwidget);
         menubar = new QMenuBar(CreateRule);
@@ -83,6 +113,7 @@ public:
     {
         CreateRule->setWindowTitle(QCoreApplication::translate("CreateRule", "MainWindow", nullptr));
         Create->setText(QCoreApplication::translate("CreateRule", "\345\210\233\345\273\272", nullptr));
+        pushButton->setText(QCoreApplication::translate("CreateRule", "\344\277\235\345\255\230", nullptr));
         menu->setTitle(QCoreApplication::translate("CreateRule", "\351\200\211\351\241\271", nullptr));
     } // retranslateUi
 

@@ -1,133 +1,651 @@
 #include "rule.h"
-
+#include <QTime>
 Rule::Rule()
 {
-
+    condition=0;
 }
 
-Rule::Rule(int ruletype, int condition, QString column, QString CompareData)
+Rule::Rule(int ruletype, int ruletype1, QString column, QString CompareData)
 {
     RT=ruletype;
-    this->condition=condition;
+    this->RT1=ruletype1;
     this->column=column;
     this->CompareData=CompareData;
 }
 
-Rule::Rule(int ruletype, int condition, QString column)
+Rule::Rule(int ruletype, int ruletype1, QString column)
 {
     RT=ruletype;
-    this->condition=condition;
+    this->RT1=ruletype1;
     this->column=column;
 }
 
+void Rule::CheckRule(QXlsx::Document& xlsx)
+{
+    if(xlsx.load())
+    {
+        if(RT1==0)//存在A
+        {
+            this->condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    if (cellValue.isEmpty()) {
+                        ErrMsg.append({i,column[j]});
+                        this->condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==1)//不存在A
+        {
+            for(int j=0;j<column.length();j++)
+            {
+                this->condition=1;
+                int col=column[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    if (!cellValue.isEmpty()) {
+                        ErrMsg.append({i,column[j]});
+                        this->condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==2)//存在BCDEF中的N个
+        {
+            int flag=0;
+            int colnum=0;
+            for(int j=0;j<column.length();j++)
+            {
+                flag=0;
+                int col=column[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)->value().toString();
+                    if (cellValue.isEmpty()) {
+                        ErrMsg.append({i,column[j]});
+                    }
+                    else
+                    {
+                        flag++;
+                        if(flag==0)
+                            colnum++;
+                    }
+                }
+            }
+            if(colnum>=CompareData.toInt())
+                this->condition=1;
+        }
+        if(RT1==3)//不存在BCDEF中的N个
+        {
+            int flag=0;
+            int colnum=0;
+            for(int j=0;j<column.length();j++)
+            {
+                flag=0;
+                int col=column[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    if (cellValue.isEmpty()) {
+                        ErrMsg.append({i,column[j]});
+                    }
+                    else
+                    {
+                        flag++;
+                        if(flag==0)
+                            colnum++;
+                    }
+                }
+            }
+            if(colnum<=CompareData.toInt())
+                this->condition=1;
+        }
+        if(RT1==4)//A等于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue1!=cellValue) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==5)//A不等于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue1==cellValue) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==6)//A内容为空
+        {
+            for(int j=0;j<column.length();j++)
+            {
+                this->condition=1;
+                int col=column[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    if (!cellValue.isEmpty()) {
+                        ErrMsg.append({i,column[j]});
+                        this->condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==7)//A内容不为空
+        {
+            for(int j=0;j<column.length();j++)
+            {
+                this->condition=1;
+                int col=column[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    if (!cellValue.isEmpty()) {
+                        ErrMsg.append({i,column[j]});
+                        this->condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==8)//A包含B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (!cellValue.contains(cellValue1)) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==9)//A不包含B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue.contains(cellValue1)) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==10)//是BCDEF中的1个
+        {
+            int flag=0;
+            for(int j=0;j<CompareData.length();j++)
+            {
+                flag=0;
+                int col=column[0].toUpper().unicode()-'A'+1;
+                int col1=CompareData[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue1!=cellValue1) {
+                        ErrMsg.append({i,column[j]});
+                        flag++;
+                    }
+                }
+                if(flag==0)
+                {
+                    condition=1;
+                }
+            }
+        }
+        if(RT1==11)//不是BCDEF中的1个
+        {
+            int flag=0;
+            for(int j=0;j<CompareData.length();j++)
+            {
+                flag=0;
+                int col=column[0].toUpper().unicode()-'A'+1;
+                int col1=CompareData[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue1==cellValue1) {
+                        ErrMsg.append({i,column[j]});
+                        flag++;
+                    }
+                }
+                if(flag==0)
+                {
+                    condition=1;
+                }
+            }
+        }
+        if(RT1==12)//A小于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue.toInt()>=cellValue1.toInt()) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==13)//A小于等于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue.toInt()>cellValue1.toInt()) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==14)//A大于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue.toInt()<=cellValue1.toInt()) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==15)//A大于等于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue.toInt()<cellValue1.toInt()) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==16)//A等于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue.toInt()!=cellValue1.toInt()) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==17)//A不等于B
+        {
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue.toInt()==cellValue1.toInt()) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==18)//是BCDEF中的1个
+        {
+            int flag=0;
+            for(int j=0;j<CompareData.length();j++)
+            {
+                flag=0;
+                int col=column[0].toUpper().unicode()-'A'+1;
+                int col1=CompareData[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue1!=cellValue1) {
+                        ErrMsg.append({i,column[j]});
+                        flag++;
+                    }
+                }
+                if(flag==0)
+                {
+                    condition=1;
+                }
+            }
+        }
+        if(RT1==19)//不是BCDEF中的1个
+        {
+            int flag=0;
+            for(int j=0;j<CompareData.length();j++)
+            {
+                flag=0;
+                int col=column[0].toUpper().unicode()-'A'+1;
+                int col1=CompareData[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue1==cellValue1) {
+                        ErrMsg.append({i,column[j]});
+                        flag++;
+                    }
+                }
+                if(flag==0)
+                {
+                    condition=1;
+                }
+            }
+        }
+        if(RT1==20)//A早于B
+        {
+            QTime t1,t2;
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if(RT==2)
+                    {
+                        t1=QTime::fromString(cellValue,"hh::mm::ss");
+                        t2=QTime::fromString(cellValue1,"hh::mm::ss");
+                    }
+                    if(RT==3)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd");
+                    }
+                    if(RT==4)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd hh:mm:ss");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd hh:mm:ss");
+                    }
+                    if (t1>=t2) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==21)//A早于等于B
+        {
+            QTime t1,t2;
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if(RT==2)
+                    {
+                        t1=QTime::fromString(cellValue,"hh::mm::ss");
+                        t2=QTime::fromString(cellValue1,"hh::mm::ss");
+                    }
+                    if(RT==3)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd");
+                    }
+                    if(RT==4)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd hh:mm:ss");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd hh:mm:ss");
+                    }
+                    if (t1>t2) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==22)//A晚于B
+        {
+            QTime t1,t2;
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if(RT==2)
+                    {
+                        t1=QTime::fromString(cellValue,"hh::mm::ss");
+                        t2=QTime::fromString(cellValue1,"hh::mm::ss");
+                    }
+                    if(RT==3)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd");
+                    }
+                    if(RT==4)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd hh:mm:ss");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd hh:mm:ss");
+                    }
+                    if (t1<=t2) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
+        }
+        if(RT1==23)//A晚于等于B
+        {
+            QTime t1,t2;
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if(RT==2)
+                    {
+                        t1=QTime::fromString(cellValue,"hh::mm::ss");
+                        t2=QTime::fromString(cellValue1,"hh::mm::ss");
+                    }
+                    if(RT==3)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd");
+                    }
+                    if(RT==4)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd hh:mm:ss");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd hh:mm:ss");
+                    }
+                    if (t1<t2) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
 
+        }
+        if(RT1==24)//A和B时间相同
+        {
+            QTime t1,t2;
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if(RT==2)
+                    {
+                        t1=QTime::fromString(cellValue,"hh::mm::ss");
+                        t2=QTime::fromString(cellValue1,"hh::mm::ss");
+                    }
+                    if(RT==3)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd");
+                    }
+                    if(RT==4)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd hh:mm:ss");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd hh:mm:ss");
+                    }
+                    if (t1!=t2) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
 
-// bool Rule::CheckRule(const QXlsx::Cell* cell)
-// {
-//     switch (RT) {
-//     case ExistRule:
-//         if (condition == 0) {
-//             return true;
-//         } else if (condition == 1) {
-//             return false;
-//         } else if (condition.find("存在") != std::string::npos) {
-//             // 处理“存在BCDEF中的N个”
-//             QStringList list = QString::fromStdString(condition).remove("存在").split("中的");
-//             QString letters = list[0];
-//             int N = list[1].toInt();
-//             int count = 0;
-//             for (auto ch : letters) {
-//                 if (ch == cell->value().toString()) {
-//                     count++;
-//                 }
-//             }
-//             return count >= N;
-//         } else if (condition.find("不存在") != std::string::npos) {
-//             // 处理“不存在BCDEF中的N个”
-//             QStringList list = QString::fromStdString(condition).remove("不存在").split("中的");
-//             QString letters = list[0];
-//             int N = list[1].toInt();
-//             int count = 0;
-//             for (auto ch : letters) {
-//                 if (ch == cell->value().toString()) {
-//                     count++;
-//                 }
-//             }
-//             return count == 0;
-//         }
-//         break;
+        }
+        if(RT1==26)//A在B和C时间范围内
+        {
+            QTime t1,t2,t3;
+            condition=1;
+            for(int j=0;j<column.length();j++)
+            {
+                int col=column[j].toUpper().unicode()-'A'+1;
+                int col1=CompareData[0].toUpper().unicode()-'A'+1;
+                int col2=CompareData[1].toUpper().unicode()-'A'+1;
+                QStringList parts1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    QString cellValue2 = xlsx.cellAt(i,col2)?xlsx.cellAt(i,col2)->value().toString():"";
+                    if(RT==2)
+                    {
+                        t1=QTime::fromString(cellValue,"hh::mm::ss");
+                        t2=QTime::fromString(cellValue1,"hh::mm::ss");
+                        t3=QTime::fromString(cellValue2,"hh::mm::ss");
+                    }
+                    if(RT==3)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd");
+                        t3=QTime::fromString(cellValue2,"yyyy-MM-dd");
+                    }
+                    if(RT==4)
+                    {
+                        t1=QTime::fromString(cellValue,"yyyy-MM-dd hh:mm:ss");
+                        t2=QTime::fromString(cellValue1,"yyyy-MM-dd hh:mm:ss");
+                        t3=QTime::fromString(cellValue2,"yyyy-MM-dd hh:mm:ss");
+                    }
+                    if (t1<t2||t1>t3) {
+                        ErrMsg.append({i,column[j]});
+                        condition=0;
+                    }
+                }
+            }
 
-//     case StringRule:
-//     {
-//         QString cellValue = cell->value().toString();
-//         QString compareValue = QString::fromStdString(compareValue);
-//         if (condition == "等于") {
-//             return cellValue == compareValue;
-//         } else if (condition == "不等于") {
-//             return cellValue != compareValue;
-//         } else if (condition == "包含") {
-//             return cellValue.contains(compareValue);
-//         } else if (condition == "不包含") {
-//             return !cellValue.contains(compareValue);
-//         } else if (condition.find("存在") != std::string::npos) {
-//             QStringList list = QString::fromStdString(condition).remove("存在").split("中的");
-//             QString letters = list[0];
-//             int N = list[1].toInt();
-//             int count = 0;
-//             for (auto ch : letters) {
-//                 if (cellValue.contains(ch)) {
-//                     count++;
-//                 }
-//             }
-//             return count >= N;
-//         } else if (condition.find("不存在") != std::string::npos) {
-//             QStringList list = QString::fromStdString(condition).remove("不存在").split("中的");
-//             QString letters = list[0];
-//             int N = list[1].toInt();
-//             int count = 0;
-//             for (auto ch : letters) {
-//                 if (cellValue.contains(ch)) {
-//                     count++;
-//                 }
-//             }
-//             return count == 0;
-//         }
-//     }
-//     break;
+        }
+        if(RT1==27)//是BCDEF中的1个
+        {
+            int flag=0;
+            for(int j=0;j<CompareData.length();j++)
+            {
+                flag=0;
+                int col=column[0].toUpper().unicode()-'A'+1;
+                int col1=CompareData[j].toUpper().unicode()-'A'+1;
+                for(int i=1;i<=xlsx.dimension().lastRow();i++)
+                {
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
+                    QString cellValue1 = xlsx.cellAt(i,col1)?xlsx.cellAt(i,col1)->value().toString():"";
+                    if (cellValue1!=cellValue1) {
+                        ErrMsg.append({i,column[j]});
+                        flag++;
+                    }
+                }
+                if(flag==0)
+                {
+                    condition=1;
+                }
+            }
+        }
 
-//     case NumberRule:
-//     {
-//         double cellValue = cell->value().toDouble();
-//         double compareValue = std::stod(compareValue);
-
-//         if (condition == "大于") {
-//             return cellValue > compareValue;
-//         } else if (condition == "小于") {
-//             return cellValue < compareValue;
-//         } else if (condition == "等于") {
-//             return cellValue == compareValue;
-//         } else if (condition == "不等于") {
-//             return cellValue != compareValue;
-//         }
-//     }
-//     break;
-
-//     case TimeRule:
-//     {
-//         QDateTime cellValue = cell->value().toDateTime();
-//         QDateTime compareValue = QDateTime::fromString(QString::fromStdString(compareValue), Qt::ISODate);
-
-//         if (condition == "早于") {
-//             return cellValue < compareValue;
-//         } else if (condition == "晚于") {
-//             return cellValue > compareValue;
-//         } else if (condition == "等于") {
-//             return cellValue == compareValue;
-//         } else if (condition == "不等于") {
-//             return cellValue != compareValue;
-//         }
-//     }
-//     break;
-//     }
-//     return false;
-// }
+    }
+}

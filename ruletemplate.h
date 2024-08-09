@@ -12,7 +12,8 @@ public:
     RuleTemplate();
     QVector<Rule> m_Rule;
     int RuleNum;
-
+    QString Name;
+    QString Description;
 
 };
 

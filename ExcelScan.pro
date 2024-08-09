@@ -9,24 +9,29 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    analysisjson.cpp \
     createrule.cpp \
     main.cpp \
     mainwindow.cpp \
     makerule.cpp \
     rule.cpp \
-    ruletemplate.cpp
+    ruletemplate.cpp \
+    templatedescription.cpp
 
 HEADERS += \
+    analysisjson.h \
     createrule.h \
     mainwindow.h \
     makerule.h \
     rule.h \
-    ruletemplate.h
+    ruletemplate.h \
+    templatedescription.h
 
 FORMS += \
     createrule.ui \
     mainwindow.ui \
-    makerule.ui
+    makerule.ui \
+    templatedescription.ui
 msvc
 {
     QMAKE_CFLAGS += /utf-8

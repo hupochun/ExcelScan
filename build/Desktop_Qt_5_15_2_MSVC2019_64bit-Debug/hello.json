@@ -1,0 +1,29 @@
+{
+    "Description": "123321",
+    "Name": "hello",
+    "RuleNum": 2,
+    "Rules": [
+        {
+            "CompareData": "",
+            "Description": "asdasd",
+            "ErrMsg": [
+            ],
+            "Name": "hello",
+            "RT": 0,
+            "RT1": 1,
+            "column": "A",
+            "condition": -1070034368
+        },
+        {
+            "CompareData": "",
+            "Description": "asdasd",
+            "ErrMsg": [
+            ],
+            "Name": "hello",
+            "RT": 0,
+            "RT1": 1,
+            "column": "A",
+            "condition": -1070034368
+        }
+    ]
+}

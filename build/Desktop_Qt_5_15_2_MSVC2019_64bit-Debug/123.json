@@ -1,0 +1,18 @@
+{
+    "Description": "123",
+    "Name": "123",
+    "RuleNum": 1,
+    "Rules": [
+        {
+            "CompareData": "",
+            "Description": "333",
+            "ErrMsg": [
+            ],
+            "Name": "222",
+            "RT": 0,
+            "RT1": 1,
+            "column": "A",
+            "condition": -811692592
+        }
+    ]
+}

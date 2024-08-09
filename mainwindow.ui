@@ -19,7 +19,20 @@
      <widget class="QWidget" name="widget" native="true">
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
-        <widget class="QTableWidget" name="tableWidget"/>
+        <widget class="QTableWidget" name="tableWidget">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -45,11 +58,13 @@
     <addaction name="Export"/>
     <addaction name="Import"/>
     <addaction name="Rename"/>
+    <addaction name="action_Excel"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>开始</string>
     </property>
+    <addaction name="action"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -83,6 +98,16 @@
   <action name="Rename">
    <property name="text">
     <string>重命名</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>启动</string>
+   </property>
+  </action>
+  <action name="action_Excel">
+   <property name="text">
+    <string>选择Excel</string>
    </property>
   </action>
  </widget>

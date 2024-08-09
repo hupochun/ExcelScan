@@ -2,7 +2,7 @@
 #include "ui_makerule.h"
 #include <QListView>
 MakeRule::MakeRule(QWidget *parent)
-    : QWidget(parent)
+    : QDialog(parent)
     , ui(new Ui::MakeRule)
 {
     ui->setupUi(this);
@@ -38,6 +38,10 @@ MakeRule::~MakeRule()
 
 void MakeRule::on_pushButton_2_released()
 {
+    ui->lineEdit->clear();
+    ui->lineEdit_2->clear();
+    ui->lineEdit_3->clear();
+    ui->lineEdit_4->clear();
     this->close();
 }
 
@@ -78,7 +82,6 @@ void MakeRule::on_comboBox_activated(int index)
     ui->comboBox_2->addItem("X大于等于Y");
     ui->comboBox_2->addItem("X等于Y");
     ui->comboBox_2->addItem("X不等于Y");
-    ui->comboBox_2->addItem("X在Y和Z时间范围内");
     ui->comboBox_2->addItem("X是XXXX中的1个");
     ui->comboBox_2->addItem("X不是XXXX中的1个");
 
@@ -95,12 +98,12 @@ void MakeRule::on_comboBox_activated(int index)
     QListView* view = qobject_cast<QListView*>(ui->comboBox_2->view());
     if(index==0)
     {
-        for(int i=12;i<29;i++)
+        for(int i=12;i<28;i++)
         view->setRowHidden(i, true);//隐藏为TRUE，显示为false
     }
     if(index==1)
     {
-        for(int i=4;i<29;i++)
+        for(int i=4;i<28;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
     }
     if(index==2)
@@ -122,21 +125,21 @@ void MakeRule::on_comboBox_activated(int index)
     {
         for(int i=4;i<12;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
-        for(int i=21;i<29;i++)
+        for(int i=20;i<29;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
     }
     if(index==6)
     {
         for(int i=4;i<12;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
-        for(int i=21;i<29;i++)
+        for(int i=20;i<28;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
     }
     if(index==7)
     {
         for(int i=4;i<12;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
-        for(int i=21;i<29;i++)
+        for(int i=20;i<28;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
     }
 }

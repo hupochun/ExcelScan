@@ -5,14 +5,13 @@ CreateRule::CreateRule(QWidget *parent)
     , ui(new Ui::CreateRule)
 {
     ui->setupUi(this);
-    m_MakeRule=new MakeRule;
+    m_MakeRule=new MakeRule(this);
     ui->tableWidget->setColumnCount(2);
     QStringList header;
     header<<"名称"<<"描述";
     ui->tableWidget->setColumnCount(header.size());
     ui->tableWidget->setHorizontalHeaderLabels(header);
     connect(m_MakeRule,&MakeRule::CreateFinished,this,&CreateRule::AddRule);
-
 }
 
 void CreateRule::FlashTable()
@@ -38,8 +37,24 @@ void CreateRule::AddRule(Rule temp)
     FlashTable();
 }
 
+void CreateRule::SolveDes(QString name, QString des)
+{
+    this->show();
+    Template.Name=name;
+    Template.Description=des;
+}
+
+
+
 void CreateRule::on_Create_triggered()
 {
     m_MakeRule->show();
+}
+
+
+void CreateRule::on_pushButton_released()
+{
+    emit AddRuleComplete(Template);
+    this->close();
 }
 
