@@ -1,6 +1,7 @@
 #include "makerule.h"
 #include "ui_makerule.h"
 #include <QListView>
+#include <QMessageBox>
 MakeRule::MakeRule(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::MakeRule)
@@ -48,6 +49,11 @@ void MakeRule::on_pushButton_2_released()
 
 void MakeRule::on_pushButton_released()
 {
+    if(ui->lineEdit->text().isEmpty()||ui->lineEdit_2->text().isEmpty()||ui->lineEdit_3->text().isEmpty())
+    {
+        QMessageBox::about(this,"提示","规则名称描述参数1不能为空");
+        return;
+    }
     Rule temp(ui->comboBox->currentIndex(),ui->comboBox_2->currentIndex(),ui->lineEdit_3->text(),ui->lineEdit_4->text());
     temp.Name=ui->lineEdit->text();
     temp.Description=ui->lineEdit_2->text();
@@ -125,7 +131,7 @@ void MakeRule::on_comboBox_activated(int index)
     {
         for(int i=4;i<12;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
-        for(int i=20;i<29;i++)
+        for(int i=20;i<28;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
     }
     if(index==6)
@@ -142,5 +148,13 @@ void MakeRule::on_comboBox_activated(int index)
         for(int i=20;i<28;i++)
             view->setRowHidden(i, true);//隐藏为TRUE，显示为false
     }
+}
+
+void MakeRule::ui_clear()
+{
+    ui->lineEdit->clear();
+    ui->lineEdit_2->clear();
+    ui->lineEdit_3->clear();
+    ui->lineEdit_4->clear();
 }
 

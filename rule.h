@@ -26,6 +26,7 @@ public:
     QString Description;
     QString Name;
     QVector<Err> ErrMsg;
+    QString GetType();
 };
 
 #endif // RULE_H

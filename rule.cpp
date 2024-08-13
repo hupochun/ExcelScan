@@ -11,6 +11,7 @@ Rule::Rule(int ruletype, int ruletype1, QString column, QString CompareData)
     this->RT1=ruletype1;
     this->column=column;
     this->CompareData=CompareData;
+    condition=0;
 }
 
 Rule::Rule(int ruletype, int ruletype1, QString column)
@@ -18,6 +19,7 @@ Rule::Rule(int ruletype, int ruletype1, QString column)
     RT=ruletype;
     this->RT1=ruletype1;
     this->column=column;
+    condition=0;
 }
 
 void Rule::CheckRule(QXlsx::Document& xlsx)
@@ -58,6 +60,7 @@ void Rule::CheckRule(QXlsx::Document& xlsx)
         }
         if(RT1==2)//存在BCDEF中的N个
         {
+            condition=0;
             int flag=0;
             int colnum=0;
             for(int j=0;j<column.length();j++)
@@ -66,7 +69,7 @@ void Rule::CheckRule(QXlsx::Document& xlsx)
                 int col=column[j].toUpper().unicode()-'A'+1;
                 for(int i=1;i<=xlsx.dimension().lastRow();i++)
                 {
-                    QString cellValue = xlsx.cellAt(i,col)->value().toString();
+                    QString cellValue = xlsx.cellAt(i,col)?xlsx.cellAt(i,col)->value().toString():"";
                     if (cellValue.isEmpty()) {
                         ErrMsg.append({i,column[j]});
                     }
@@ -648,4 +651,32 @@ void Rule::CheckRule(QXlsx::Document& xlsx)
         }
 
     }
+}
+
+QString Rule::GetType()
+{
+    switch (this->RT) {
+    case 0:
+        return "字符串";
+        break;
+    case 1:
+        return "是否";
+    case 2:
+        return "时分秒";
+    case 3:
+        return "年月日";
+    case 4:
+        return "年月日时分秒";
+    case 5:
+        return "数字";
+    case 6:
+        return "小数";
+    case 7:
+        return "百分比";
+
+    default:
+        break;
+    }
+
+
 }

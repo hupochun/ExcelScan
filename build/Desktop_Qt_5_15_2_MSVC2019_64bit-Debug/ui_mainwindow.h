@@ -34,6 +34,7 @@ public:
     QAction *Rename;
     QAction *action;
     QAction *action_Excel;
+    QAction *Edit;
     QWidget *centralwidget;
     QGridLayout *gridLayout_2;
     QWidget *widget;
@@ -48,7 +49,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(800, 600);
+        MainWindow->resize(373, 498);
         Create = new QAction(MainWindow);
         Create->setObjectName(QString::fromUtf8("Create"));
         Copy = new QAction(MainWindow);
@@ -65,6 +66,8 @@ public:
         action->setObjectName(QString::fromUtf8("action"));
         action_Excel = new QAction(MainWindow);
         action_Excel->setObjectName(QString::fromUtf8("action_Excel"));
+        Edit = new QAction(MainWindow);
+        Edit->setObjectName(QString::fromUtf8("Edit"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout_2 = new QGridLayout(centralwidget);
@@ -77,7 +80,7 @@ public:
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
         tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tableWidget->setAlternatingRowColors(true);
-        tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+        tableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
         tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
         gridLayout->addWidget(tableWidget, 0, 0, 1, 1);
@@ -88,7 +91,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 21));
+        menubar->setGeometry(QRect(0, 0, 373, 21));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_2 = new QMenu(menubar);
@@ -107,6 +110,7 @@ public:
         menu->addAction(Import);
         menu->addAction(Rename);
         menu->addAction(action_Excel);
+        menu->addAction(Edit);
         menu_2->addAction(action);
 
         retranslateUi(MainWindow);
@@ -125,6 +129,7 @@ public:
         Rename->setText(QCoreApplication::translate("MainWindow", "\351\207\215\345\221\275\345\220\215", nullptr));
         action->setText(QCoreApplication::translate("MainWindow", "\345\220\257\345\212\250", nullptr));
         action_Excel->setText(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251Excel", nullptr));
+        Edit->setText(QCoreApplication::translate("MainWindow", "\347\274\226\350\276\221", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251", nullptr));
         menu_2->setTitle(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213", nullptr));
     } // retranslateUi

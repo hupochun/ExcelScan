@@ -16,12 +16,16 @@ public:
 
     ~MakeRule();
 
+public slots:
+    void ui_clear();
 private slots:
     void on_pushButton_2_released();
 
     void on_pushButton_released();
 
     void on_comboBox_activated(int index);
+
+
 signals:
     void CreateFinished(Rule rule);
 private:

@@ -14,6 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     makerule.cpp \
+    rename.cpp \
     rule.cpp \
     ruletemplate.cpp \
     templatedescription.cpp
@@ -23,6 +24,7 @@ HEADERS += \
     createrule.h \
     mainwindow.h \
     makerule.h \
+    rename.h \
     rule.h \
     ruletemplate.h \
     templatedescription.h
@@ -31,6 +33,7 @@ FORMS += \
     createrule.ui \
     mainwindow.ui \
     makerule.ui \
+    rename.ui \
     templatedescription.ui
 msvc
 {

@@ -17,12 +17,16 @@ public:
     MakeRule* m_MakeRule;
     RuleTemplate Template;
     void FlashTable();
+    bool IsRevise;
     ~CreateRule();
 signals:
-    void AddRuleComplete(RuleTemplate temp);
+    void AddRuleComplete(RuleTemplate temp,bool isRevise);
+    void makerule_clear();
 public slots:
     void AddRule(Rule temp);
     void SolveDes(QString name,QString des);
+    void ReceiveTemplate(RuleTemplate Temp);
+
 
 
 private slots:
@@ -31,6 +35,8 @@ private slots:
     void on_pushButton_released();
 
 
+
+    void on_Delete_triggered();
 
 private:
     Ui::CreateRule *ui;

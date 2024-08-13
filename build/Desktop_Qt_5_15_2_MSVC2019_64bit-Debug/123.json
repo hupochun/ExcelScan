@@ -5,14 +5,12 @@
     "Rules": [
         {
             "CompareData": "",
-            "Description": "333",
-            "ErrMsg": [
-            ],
-            "Name": "222",
+            "Description": "123",
+            "Name": "123",
             "RT": 0,
-            "RT1": 1,
+            "RT1": 0,
             "column": "A",
-            "condition": -811692592
+            "condition": 821006432
         }
     ]
 }

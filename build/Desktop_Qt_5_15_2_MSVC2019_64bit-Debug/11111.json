@@ -1,0 +1,16 @@
+{
+    "Description": "11111",
+    "Name": "11111",
+    "RuleNum": 1,
+    "Rules": [
+        {
+            "CompareData": "4",
+            "Description": "11111",
+            "Name": "11111",
+            "RT": 2,
+            "RT1": 2,
+            "column": "ABCDE",
+            "condition": -139489952
+        }
+    ]
+}

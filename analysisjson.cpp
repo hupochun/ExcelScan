@@ -2,13 +2,13 @@
 
 AnalysisJson::AnalysisJson() {}
 
-QJsonObject AnalysisJson::errToJson(const Err &err)
-{
-    QJsonObject jsonObj;
-    jsonObj["ErrRow"] = err.ErrRow;
-    jsonObj["ErrCol"] = QString(err.ErrCol);
-    return jsonObj;
-}
+// QJsonObject AnalysisJson::errToJson(const Err &err)
+// {
+//     QJsonObject jsonObj;
+//     jsonObj["ErrRow"] = err.ErrRow;
+//     jsonObj["ErrCol"] = QString(err.ErrCol);
+//     return jsonObj;
+// }
 
 QJsonObject AnalysisJson::ruleToJson(const Rule &rule)
 {
@@ -21,11 +21,11 @@ QJsonObject AnalysisJson::ruleToJson(const Rule &rule)
     jsonObj["Description"] = rule.Description;
     jsonObj["Name"] = rule.Name;
 
-    QJsonArray errArray;
-    for (const Err& err : rule.ErrMsg) {
-        errArray.append(errToJson(err));
-    }
-    jsonObj["ErrMsg"] = errArray;
+    // QJsonArray errArray;
+    // for (const Err& err : rule.ErrMsg) {
+    //     errArray.append(errToJson(err));
+    // }
+    // jsonObj["ErrMsg"] = errArray;
 
     return jsonObj;
 }
@@ -55,6 +55,7 @@ void AnalysisJson::saveRuleTemplateToJson(const RuleTemplate &ruleTemplate, cons
     QFile file(filePath);
     if (file.open(QIODevice::WriteOnly)) {
         QTextStream stream(&file);
+        stream.setCodec("UTF-8");
         stream << jsonData;
         file.close();
     } else {
@@ -62,13 +63,13 @@ void AnalysisJson::saveRuleTemplateToJson(const RuleTemplate &ruleTemplate, cons
     }
 }
 
-Err AnalysisJson::jsonToErr(const QJsonObject &jsonObj)
-{
-    Err err;
-    err.ErrRow = jsonObj["ErrRow"].toInt();
-    err.ErrCol = jsonObj["ErrCol"].toString().at(0).toLatin1();
-    return err;
-}
+// Err AnalysisJson::jsonToErr(const QJsonObject &jsonObj)
+// {
+//     Err err;
+//     err.ErrRow = jsonObj["ErrRow"].toInt();
+//     err.ErrCol = jsonObj["ErrCol"].toString().at(0).toLatin1();
+//     return err;
+// }
 
 Rule AnalysisJson::jsonToRule(const QJsonObject &jsonObj)
 {
@@ -81,10 +82,10 @@ Rule AnalysisJson::jsonToRule(const QJsonObject &jsonObj)
     rule.Description = jsonObj["Description"].toString();
     rule.Name = jsonObj["Name"].toString();
 
-    QJsonArray errArray = jsonObj["ErrMsg"].toArray();
-    for (const QJsonValue& value : errArray) {
-        rule.ErrMsg.append(jsonToErr(value.toObject()));
-    }
+    // QJsonArray errArray = jsonObj["ErrMsg"].toArray();
+    // for (const QJsonValue& value : errArray) {
+    //     rule.ErrMsg.append(jsonToErr(value.toObject()));
+    // }
 
     return rule;
 }
@@ -109,8 +110,11 @@ RuleTemplate AnalysisJson::loadRuleTemplateFromJson(const QString &filePath)
     QFile file(filePath);
     RuleTemplate ruleTemplate;
 
-    if (file.open(QIODevice::ReadOnly)) {
-        QByteArray jsonData = file.readAll();
+    if (file.open(QIODevice::ReadOnly| QIODevice::Text)) {
+
+        QTextStream stream(&file);
+        stream.setCodec("UTF-8");
+        QByteArray jsonData = stream.readAll().toUtf8();
         file.close();
 
         QJsonDocument jsonDoc(QJsonDocument::fromJson(jsonData));
