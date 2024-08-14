@@ -137,7 +137,7 @@ public:
 
     void retranslateUi(QDialog *Rename)
     {
-        Rename->setWindowTitle(QCoreApplication::translate("Rename", "Dialog", nullptr));
+        Rename->setWindowTitle(QCoreApplication::translate("Rename", "\351\207\215\345\221\275\345\220\215", nullptr));
         label->setText(QCoreApplication::translate("Rename", "\345\220\215\347\247\260", nullptr));
         label_2->setText(QCoreApplication::translate("Rename", "\346\217\217\350\277\260", nullptr));
         pushButton->setText(QCoreApplication::translate("Rename", "\345\256\214\346\210\220", nullptr));

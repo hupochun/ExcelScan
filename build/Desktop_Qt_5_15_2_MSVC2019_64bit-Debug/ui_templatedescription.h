@@ -109,7 +109,7 @@ public:
 
     void retranslateUi(QWidget *TemplateDescription)
     {
-        TemplateDescription->setWindowTitle(QCoreApplication::translate("TemplateDescription", "Form", nullptr));
+        TemplateDescription->setWindowTitle(QCoreApplication::translate("TemplateDescription", "\345\220\215\347\247\260\345\222\214\346\217\217\350\277\260", nullptr));
         pushButton->setText(QCoreApplication::translate("TemplateDescription", "\347\241\256\350\256\244", nullptr));
         pushButton_2->setText(QCoreApplication::translate("TemplateDescription", "\345\217\226\346\266\210", nullptr));
         label_2->setText(QCoreApplication::translate("TemplateDescription", "\346\217\217\350\277\260", nullptr));

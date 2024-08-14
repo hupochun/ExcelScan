@@ -188,7 +188,7 @@ public:
 
     void retranslateUi(QWidget *MakeRule)
     {
-        MakeRule->setWindowTitle(QCoreApplication::translate("MakeRule", "Form", nullptr));
+        MakeRule->setWindowTitle(QCoreApplication::translate("MakeRule", "\346\267\273\345\212\240\350\247\204\345\210\231", nullptr));
         label->setText(QCoreApplication::translate("MakeRule", "\345\220\215\347\247\260", nullptr));
         label_2->setText(QCoreApplication::translate("MakeRule", "\346\217\217\350\277\260", nullptr));
         label_3->setText(QCoreApplication::translate("MakeRule", "\346\225\260\346\215\256\347\261\273\345\236\213", nullptr));

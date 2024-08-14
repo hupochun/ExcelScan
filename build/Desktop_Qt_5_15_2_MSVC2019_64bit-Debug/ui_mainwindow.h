@@ -120,7 +120,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Excel\346\243\200\346\237\245\345\267\245\345\205\267", nullptr));
         Create->setText(QCoreApplication::translate("MainWindow", "\345\210\233\345\273\272", nullptr));
         Copy->setText(QCoreApplication::translate("MainWindow", "\345\244\215\345\210\266", nullptr));
         Delete->setText(QCoreApplication::translate("MainWindow", "\345\210\240\351\231\244", nullptr));

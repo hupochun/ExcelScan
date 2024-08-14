@@ -125,7 +125,7 @@ public:
 
     void retranslateUi(QMainWindow *CreateRule)
     {
-        CreateRule->setWindowTitle(QCoreApplication::translate("CreateRule", "MainWindow", nullptr));
+        CreateRule->setWindowTitle(QCoreApplication::translate("CreateRule", "\350\247\204\345\210\231", nullptr));
         Create->setText(QCoreApplication::translate("CreateRule", "\345\210\233\345\273\272", nullptr));
         Delete->setText(QCoreApplication::translate("CreateRule", "\345\210\240\351\231\244", nullptr));
         pushButton->setText(QCoreApplication::translate("CreateRule", "\344\277\235\345\255\230", nullptr));
